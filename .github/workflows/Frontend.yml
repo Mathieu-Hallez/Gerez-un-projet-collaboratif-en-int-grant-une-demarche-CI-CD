@@ -5,6 +5,9 @@ jobs:
   testing:
     name: Testing
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -14,12 +17,8 @@ jobs:
           node-version: '20'
       - name: Install depencies
         run: npm install
-        working-directory: ./front
       - name: Run unit tests
-        shell: bash
-        run: ng test
-        working-directory: ./front
+        run: npm run test
       - name: Run end to end tests
         shell: bash
         run: ng e2e
-        working-directory: ./front
