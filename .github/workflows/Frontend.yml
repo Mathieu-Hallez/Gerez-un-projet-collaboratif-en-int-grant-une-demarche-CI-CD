@@ -14,7 +14,10 @@ jobs:
           node-version: '20'
       - name: Install depencies
         run: npm install
+        working-directory: ./front
       - name: Run unit tests
         run: ng test
+        working-directory: ./front
       - name: Run end to end tests
         run: ng e2e
+        working-directory: ./front
