@@ -5,16 +5,20 @@ jobs:
   testing:
     name: Testing
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
       - name: Install depencies
         run: npm install
-        working-directory: ./front
+      - name: Build
+        run: npm run build
       - name: Run unit tests
         shell: bash
         run: ng test --no-watch --no-progress --browsers=ChromeHeadless
@@ -22,4 +26,3 @@ jobs:
       - name: Run end to end tests
         shell: bash
         run: ng e2e
-        working-directory: ./front
