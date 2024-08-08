@@ -1,6 +1,6 @@
 name: frontend-workflow
 run-name: Started frontend workflow
-on: pull_request
+on: [pull_request, workflow_dispatch]
 jobs:
   testing:
     name: Testing
