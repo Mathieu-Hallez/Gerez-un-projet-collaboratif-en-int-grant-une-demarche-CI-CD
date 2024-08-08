@@ -20,7 +20,9 @@ jobs:
       - name: Build
         run: npm run build
       - name: Run unit tests
-        run: npm run test
+        shell: bash
+        run: ng test --no-watch --no-progress --browsers=ChromeHeadless
+        working-directory: ./front
       - name: Run end to end tests
         shell: bash
         run: ng e2e
