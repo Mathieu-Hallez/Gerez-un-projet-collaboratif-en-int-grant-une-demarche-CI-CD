@@ -17,7 +17,7 @@ jobs:
         working-directory: ./front
       - name: Run unit tests
         shell: bash
-        run: ng test
+        run: ng test --no-watch --no-progress --browsers=ChromeHeadless
         working-directory: ./front
       - name: Run end to end tests
         shell: bash
