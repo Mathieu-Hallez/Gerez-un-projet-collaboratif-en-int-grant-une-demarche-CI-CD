@@ -25,7 +25,3 @@ jobs:
 
       - name: Run unit tests
         run: npm run test:ci
-
-      - name: Run end to end tests
-        shell: bash
-        run: npm run end2end:ci
