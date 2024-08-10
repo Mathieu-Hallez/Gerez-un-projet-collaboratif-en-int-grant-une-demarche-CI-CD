@@ -57,6 +57,7 @@ jobs:
         run: mvn clean install
   sonarcloud:
     name: SonarCloud
+    needs: [front, back]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
