@@ -52,6 +52,12 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           projectBaseDir: front/
+      - uses: dorny/test-reporter@v1
+        with:
+          artifact: test-results            # artifact name
+          name: JEST Tests                  # Name of the check run which will be created
+          path: '${{ github.workspace }}/front/coverage/bobapp/report.xml'                     # Path to test results (inside artifact .zip)
+          reporter: jest-junit              # Format of test results
   back:
     name: Backend CI
     runs-on: ubuntu-latest
