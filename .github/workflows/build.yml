@@ -20,7 +20,7 @@ on:
       - main
 jobs:
   front:
-    name: Frontend test
+    name: Frontend CI
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -28,6 +28,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -42,8 +44,14 @@ jobs:
 
       - name: Run unit tests
         run: npm run test:ci
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   back:
-    name: Backend test
+    name: Backend CI
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -52,19 +60,7 @@ jobs:
       - name: Setup maven
         uses: s4u/setup-maven-action@v1.14.0
         with:
-          java-version: 17
+          java-version: 11
+          fetch-depth: 0
       - name: Setup dependancies and testing
         run: mvn clean install
-  sonarcloud:
-    name: SonarCloud
-    needs: [front, back]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
