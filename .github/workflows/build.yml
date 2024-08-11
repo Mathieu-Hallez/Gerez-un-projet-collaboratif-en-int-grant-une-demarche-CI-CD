@@ -62,7 +62,9 @@ jobs:
       - name: Setup maven
         uses: s4u/setup-maven-action@v1.14.0
         with:
-          java-version: 11
+          java-version: |
+            11
+            17
           fetch-depth: 0
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
