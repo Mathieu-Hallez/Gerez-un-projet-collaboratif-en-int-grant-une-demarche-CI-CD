@@ -64,8 +64,8 @@ jobs:
         with:
           java-version: 11
           fetch-depth: 0
-      - name: Setup dependancies and testing
-        run: mvn clean install
+      - name: Setup dependancies
+        run: mvn clean
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
