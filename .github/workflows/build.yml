@@ -55,7 +55,7 @@ jobs:
       - uses: dorny/test-reporter@v1
         with:
           name: JEST Tests                  # Name of the check run which will be created
-          path: '${{ github.workspace }}/front/coverage/bobapp/cobertura-coverage.xml'                     # Path to test results (inside artifact .zip)
+          path: '/front/coverage/bobapp/cobertura-coverage.xml'                     # Path to test results (inside artifact .zip)
           reporter: jest-junit              # Format of test results
   back:
     name: Backend CI
