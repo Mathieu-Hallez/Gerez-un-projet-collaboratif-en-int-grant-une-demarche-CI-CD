@@ -41,12 +41,12 @@ jobs:
           name: front-code-coverage-report
           path: ${{ github.workspace }}/front/coverage/bobapp/cobertura-coverage.xml
 
-      - name: Upload test report
-        uses: actions/upload-artifact@v4  # upload test results
-        if: success() || failure()        # run this step even if previous step failed
+      - uses: dorny/test-reporter@v1
         with:
-          name: front-test-results
-          path: ${{ github.workspace }}/front/coverage/bobapp/cobertura-coverage.xml
+          name: Test report                  # Name of the check run which will be created
+          working-directory: ./front
+          path: ./coverage/bobapp/cobertura-coverage.xml                     # Path to test results (inside artifact .zip)
+          reporter: jest-junit              # Format of test results
   back:
     name: Backend CI
     runs-on: ubuntu-latest
