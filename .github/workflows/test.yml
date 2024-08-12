@@ -45,9 +45,8 @@ jobs:
         uses: actions/upload-artifact@v4  # upload test results
         if: success() || failure()        # run this step even if previous step failed
         with:
-          name: test-results
-          working-directory: ./front
-          path: ./coverage/bobapp/cobertura-coverage.xml
+          name: front-test-results
+          path: ${{ github.workspace }}/front/coverage/bobapp/cobertura-coverage.xml
   back:
     name: Backend CI
     runs-on: ubuntu-latest
@@ -99,11 +98,3 @@ jobs:
           echo "| :heavy_check_mark: Number of Lines Covered | ${{ steps.jacoco_reporter.outputs.covered_lines }} |" >> $GITHUB_STEP_SUMMARY
           echo "| :x: Number of Lines Missed | ${{ steps.jacoco_reporter.outputs.missed_lines }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Total Number of Lines | ${{ steps.jacoco_reporter.outputs.total_lines }} |" >> $GITHUB_STEP_SUMMARY
-          
-      # uploads the coverage-report.md artifact  # Optional
-      - name: Upload Code Coverage Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: code-coverage-report-markdown
-          path: ./coverage-results.md
-          retention-days: 1
