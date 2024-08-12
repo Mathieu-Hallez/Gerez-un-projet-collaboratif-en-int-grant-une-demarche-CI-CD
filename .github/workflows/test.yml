@@ -40,13 +40,7 @@ jobs:
         with:
           name: front-code-coverage-report
           path: ${{ github.workspace }}/front/coverage/bobapp/cobertura-coverage.xml
-
-      - uses: phoenix-actions/test-reporting@v8
-        with:
-          name: Test report                  # Name of the check run which will be created
-          working-directory: ./front
-          path: ./coverage/bobapp/cobertura-coverage.xml                     # Path to test results (inside artifact .zip)
-          reporter: java-junit              # Format of test results
+          
   back:
     name: Backend CI
     runs-on: ubuntu-latest
