@@ -40,6 +40,14 @@ jobs:
         with:
           name: front-code-coverage-report
           path: ${{ github.workspace }}/front/coverage/bobapp/cobertura-coverage.xml
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4  # upload test results
+        if: success() || failure()        # run this step even if previous step failed
+        with:
+          name: test-results
+          working-directory: ./front
+          path: ./coverage/bobapp/cobertura-coverage.xml
   back:
     name: Backend CI
     runs-on: ubuntu-latest
@@ -67,3 +75,35 @@ jobs:
         with:
           name: back-code-coverage-report
           path: ${{ github.workspace }}/back/target/site/jacoco/jacoco.xml
+
+      # generates coverage-report.md and publishes as checkrun
+      - name: JaCoCo Code Coverage Report
+        id: jacoco_reporter
+        uses: PavanMudigonda/jacoco-reporter@v5.0
+        with:
+          coverage_results_path: ${{ github.workspace }}/back/target/site/jacoco/jacoco.xml
+          coverage_report_name: Coverage
+          coverage_report_title: JaCoCo
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          skip_check_run: false
+          minimum_coverage: 80
+          fail_below_threshold: false
+          publish_only_summary: false
+      
+      # Publish Coverage Job Summary  # Optional
+      - name: Add Jacocoo report to workflow run summary
+        run: |
+          echo "| Outcome | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
+          echo "| Code Coverage % | ${{ steps.jacoco_reporter.outputs.coverage_percentage }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| :heavy_check_mark: Number of Lines Covered | ${{ steps.jacoco_reporter.outputs.covered_lines }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| :x: Number of Lines Missed | ${{ steps.jacoco_reporter.outputs.missed_lines }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Total Number of Lines | ${{ steps.jacoco_reporter.outputs.total_lines }} |" >> $GITHUB_STEP_SUMMARY
+          
+      # uploads the coverage-report.md artifact  # Optional
+      - name: Upload Code Coverage Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report-markdown
+          path: ./coverage-results.md
+          retention-days: 1
