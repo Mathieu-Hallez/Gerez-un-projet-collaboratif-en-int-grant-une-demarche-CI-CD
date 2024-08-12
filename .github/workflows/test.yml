@@ -38,8 +38,8 @@ jobs:
       - name: Archive code coverage results
         uses: actions/upload-artifact@v4
         with:
-          name: code-coverage-report
-          path: coverage/bobapp/cobertura-coverage.xml
+          name: front-code-coverage-report
+          path: ${{ github.workspace }}/front/coverage/bobapp/cobertura-coverage.xml
   back:
     name: Backend CI
     runs-on: ubuntu-latest
@@ -51,11 +51,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          
       - name: Setup maven
         uses: s4u/setup-maven-action@v1.14.0
         with:
           java-version: |
             11
             17
+            
       - name: Build and Testing
         run: mvn clean verify
+        
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v4
+        with:
+          name: back-code-coverage-report
+          path: ${{ github.workspace }}/back/target/site/jacoco/jacoco.xml
