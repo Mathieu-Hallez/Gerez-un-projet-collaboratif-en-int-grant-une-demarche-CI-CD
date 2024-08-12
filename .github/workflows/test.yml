@@ -41,7 +41,7 @@ jobs:
           name: front-code-coverage-report
           path: ${{ github.workspace }}/front/coverage/bobapp/cobertura-coverage.xml
 
-      - uses: dorny/test-reporter@v1
+      - uses: phoenix-actions/test-reporting@v8
         with:
           name: Test report                  # Name of the check run which will be created
           working-directory: ./front
