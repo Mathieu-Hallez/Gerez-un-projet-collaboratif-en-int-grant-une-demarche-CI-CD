@@ -1,0 +1,61 @@
+name: Test
+run-name: Started test workflow
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+jobs:
+  front-testing:
+    name: Frontend Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install depencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Run unit tests
+        run: npm run test:ci
+
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: coverage/bobapp/cobertura-coverage.xml
+  back:
+    name: Backend CI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./back
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup maven
+        uses: s4u/setup-maven-action@v1.14.0
+        with:
+          java-version: |
+            11
+            17
+      - name: Build and Testing
+        run: mvn clean verify
