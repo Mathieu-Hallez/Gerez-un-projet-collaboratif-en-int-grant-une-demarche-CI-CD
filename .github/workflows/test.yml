@@ -46,7 +46,7 @@ jobs:
           name: Test report                  # Name of the check run which will be created
           working-directory: ./front
           path: ./coverage/bobapp/cobertura-coverage.xml                     # Path to test results (inside artifact .zip)
-          reporter: jest-junit              # Format of test results
+          reporter: java-junit              # Format of test results
   back:
     name: Backend CI
     runs-on: ubuntu-latest
