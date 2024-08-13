@@ -17,7 +17,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: front-code-coverage-report
-          path: cobertura-coverage
+          path: ./cobertura-coverage.xml
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
