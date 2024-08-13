@@ -31,7 +31,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           projectBaseDir: front/
-          args: >
             
   back:
     name: Back Analyse
