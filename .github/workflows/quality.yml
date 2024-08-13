@@ -26,7 +26,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Show action trigger
-        run: echo ${{ github.action }}
+        run: echo ${{ github.event.action }}
       - name: download coverage report
         uses: actions/download-artifact@v4
         if: ${{ github.action != 'workflow_dispatch' }}
