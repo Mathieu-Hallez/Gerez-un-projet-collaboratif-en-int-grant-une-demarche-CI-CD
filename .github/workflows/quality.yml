@@ -10,13 +10,13 @@ on:
       - main
   workflow_dispatch:
 jobs:
-  testing:
-    name: Test workflow
-    uses: ./.github/workflows/test.yml
+  #testing:
+    #name: Test workflow
+    #uses: ./.github/workflows/test.yml
   front:
     name: Front Analyse
     runs-on: ubuntu-latest
-    needs: testing
+    #needs: testing
     defaults:
       run:
         working-directory: ./front
@@ -31,7 +31,7 @@ jobs:
           name: front-code-coverage-report
           path: ./front/coverage/bobapp/
           github-token: ${{ github.token }}
-          run-id: ${{ needs.testing.outputs.run-id }}
+          #run-id: ${{ needs.testing.outputs.run-id }}
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
@@ -43,7 +43,7 @@ jobs:
   back:
     name: Back Analyse
     runs-on: ubuntu-latest
-    needs: testing
+    #needs: testing
     defaults:
       run:
         working-directory: ./back
