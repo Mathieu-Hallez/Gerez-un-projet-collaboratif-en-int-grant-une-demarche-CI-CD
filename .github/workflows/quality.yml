@@ -1,6 +1,14 @@
 name: Quality
 run-name: Started quality workflow
-on: [pull_request, push, workflow_dispatch]
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+  workflow_dispatch:
 jobs:
   testing:
     name: Test workflow
