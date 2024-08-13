@@ -8,6 +8,11 @@ on:
     types: [opened, synchronize, reopened]
     branches:
       - main
+  workflow_call:
+    outputs:
+      run-id:
+        description: "Run id of workflow"
+        value: ${{ github.run_id }}
 jobs:
   front-testing:
     name: Frontend Test
@@ -39,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: front-code-coverage-report
-          path: ${{ github.workspace }}/front/coverage/bobapp/cobertura-coverage.xml
+          path: ${{ github.workspace }}/front/coverage/bobapp
           
   back:
     name: Backend CI
@@ -67,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: back-code-coverage-report
-          path: ${{ github.workspace }}/back/target/site/jacoco/jacoco.xml
+          path: ${{ github.workspace }}/back/target/site/jacoco
 
       # generates coverage-report.md and publishes as checkrun
       - name: JaCoCo Code Coverage Report
