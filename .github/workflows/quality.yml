@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 jobs:
   testing:
-    if: ${{ github.event.action == 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     name: Test workflow
     uses: ./.github/workflows/test.yml
   front:
