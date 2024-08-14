@@ -102,4 +102,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: bobapp-back:latest,bobapp-front:latest
+          file: ./back/Dockerfile
+          tags: bobapp-back:latest
