@@ -1,0 +1,115 @@
+name: Continuous delivery
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  test-quality:
+    name: Testing and Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run workflow
+        uses: ./.github/workflows/quality.yml
+  build-front:
+    name: Build frontend project
+    needs: [test-quality]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install depencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build artefact
+        uses: actions/upload-artifact@v4
+        with:
+          name: front-build-bobapp
+          path: ./dist/
+          retention-days: 30
+          
+      - name: build docker image
+      
+  build-back:
+    name: Build back project
+    needs: [test-quality]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./back
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Setup maven
+        uses: s4u/setup-maven-action@v1.14.0
+        with:
+          java-version: |
+            11
+            
+      - name: Build and Testing
+        run: mvn clean verify
+        
+      # uploads the coverage-report.md artifact  # Optional
+      - name: Upload build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: back-build-bobapp
+          path: ./target/bobapp-0.0.1-SNAPSHOT.jar
+          retention-days: 30
+  docker:
+    name: Build backend docker image
+    needs: [build-back, build-front]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download backend build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: back-build-bobapp
+          path: ./back/target/
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: user/app:latest
