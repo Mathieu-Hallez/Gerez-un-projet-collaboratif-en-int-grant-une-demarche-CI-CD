@@ -97,10 +97,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           
-      - name: Build and push
+      - name: Build backend and push
         uses: docker/build-push-action@v6
         with:
           context: ./back/
           push: true
           file: ./back/Dockerfile
           tags: mathewhallez/bobapp:bobapp-back
+          
+      - name: Build frontend and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./front/
+          push: true
+          file: ./front/Dockerfile
+          tags: mathewhallez/bobapp:bobapp-front
