@@ -39,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: front-build-bobapp
-          path: ./dist/
+          path: ./dist/**
           retention-days: 30
       
   build-back:
@@ -62,7 +62,7 @@ jobs:
             11
             
       - name: Build and Testing
-        run: mvn clean verify
+        run: mvn clean install
         
       # uploads the coverage-report.md artifact  # Optional
       - name: Upload build Artifacts
