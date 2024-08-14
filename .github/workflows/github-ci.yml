@@ -112,4 +112,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: user/app:latest
+          tags: bobapp-back:latest,bobapp-front:latest
