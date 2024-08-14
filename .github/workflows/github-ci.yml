@@ -103,4 +103,4 @@ jobs:
           context: ./back/
           push: true
           file: ./back/Dockerfile
-          tags: bobapp-back:latest
+          tags: mathewhallez/bobapp:bobapp-back
