@@ -100,7 +100,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ./back/
           push: true
-          file: ./back/Dockerfile
+          file: ./Dockerfile
           tags: bobapp-back:latest
