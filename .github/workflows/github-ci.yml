@@ -11,7 +11,7 @@ on:
 jobs:
   test-quality:
     name: Testing and Quality
-    uses: ./.github/workflows/quality.yml
+    uses: ./.github/workflows/test.yml
   build-front:
     name: Build frontend project
     needs: [test-quality]
