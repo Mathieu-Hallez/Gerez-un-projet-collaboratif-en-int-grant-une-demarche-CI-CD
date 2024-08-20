@@ -1,4 +1,4 @@
-name: Continuous delivery
+name: CI / CD
 on:
   release:
     types: [created]
